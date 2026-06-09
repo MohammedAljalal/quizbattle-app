@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users: only owner can read/write their own doc
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Quizzes
+    match /quizzes/{quizId} {
+      allow read: if request.auth != null;
+
+      // Only hosts can create quizzes
+      allow create: if request.auth != null
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'host';
+
+      // Host can fully update; participants can only add themselves to participants array
+      allow update: if request.auth != null
+        && (
+          // Host update (full access)
+          resource.data.hostId == request.auth.uid
+          ||
+          // Participant joining: only allowed to add their UID to participants array
+          (
+            request.resource.data.diff(resource.data).affectedKeys().hasOnly(['participants'])
+            && request.resource.data.participants.hasAll(resource.data.participants)
+          )
+        );
+
+      allow delete: if request.auth != null
+        && resource.data.hostId == request.auth.uid;
+    }
+
+    // Submissions: anyone authenticated can read (leaderboard)
+    // Users can only create their own
+    match /submissions/{submissionId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if false;
+    }
+  }
+}
