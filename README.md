@@ -45,7 +45,7 @@ lib/
 
 ---
 
-## 🚀 خطوات الإعداد
+##  خطوات الإعداد
 
 ### 1. إنشاء مشروع Firebase
 
@@ -93,7 +93,7 @@ flutter run
 
 ---
 
-## 🔥 Firestore Security Rules
+##  Firestore Security Rules
 
 ```javascript
 rules_version = '2';
@@ -122,7 +122,7 @@ service cloud.firestore {
 
 ---
 
-## 📊 Firestore Indexes المطلوبة
+##  Firestore Indexes المطلوبة
 
 أضفها من Firebase Console → Firestore → Indexes:
 
@@ -136,7 +136,7 @@ service cloud.firestore {
 
 ---
 
-## 🎨 تدفق التطبيق
+## تدفق التطبيق
 
 ```
 Splash (2s)
@@ -164,7 +164,7 @@ Splash (2s)
 
 ---
 
-## 📦 المكتبات المستخدمة
+##  المكتبات المستخدمة
 
 ```yaml
 firebase_core: ^3.0.0
@@ -178,15 +178,3 @@ intl: ^0.19.0
 uuid: ^4.3.0
 lottie: ^3.1.0
 ```
-
----
-
-## ⚠️ ملاحظات مهمة
-
-- **لا تنشر** `firebase_options.dart` على GitHub (أضفها لـ `.gitignore`)
-- تأكد من إضافة `google-services.json` (Android) و`GoogleService-Info.plist` (iOS)
-- لدعم اللغة العربية في `intl`، أضف في `main.dart`:
-  ```dart
-  import 'package:intl/date_symbol_data_local.dart';
-  await initializeDateFormatting('ar', null);
-  ```
